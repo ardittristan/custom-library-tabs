@@ -1,0 +1,6 @@
+[submodule "custom-library-tabs"]
+	path = custom-library-tabs
+	url = https://git.sr.ht/~avery/custom-library-tabs
+[submodule "crankshaft"]
+	path = crankshaft
+	url = https://git.sr.ht/~avery/crankshaft

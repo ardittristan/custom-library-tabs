@@ -1,0 +1,12 @@
+[
+  {
+    "source": "./../crankshaft/injected/src/services/patch.ts",
+    "dest": "./patchservice.ts",
+    "patch": "./patchservice.patch"
+  },
+  {
+    "source": "./../custom-library-tabs/src/tabs.ts",
+    "dest": "./tabs.ts",
+    "patch": "./tabs.patch"
+  }
+]

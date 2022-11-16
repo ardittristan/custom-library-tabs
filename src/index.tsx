@@ -11,7 +11,7 @@ import {
   showContextMenu,
   staticClasses,
 } from "decky-frontend-lib";
-import { VFC } from "react";
+import { ReactElement, VFC } from "react";
 import { FaShip } from "react-icons/fa";
 
 import logo from "../assets/logo.png";
@@ -82,9 +82,7 @@ const DeckyPluginRouterTest: VFC = () => {
   return (
     <div style={{ marginTop: "50px", color: "white" }}>
       Hello World!
-      <DialogButton onClick={() => Router.NavigateToStore()}>
-        Go to Store
-      </DialogButton>
+      <DialogButton onClick={() => Router.NavigateToStore()}>Go to Store</DialogButton>
     </div>
   );
 };
@@ -94,12 +92,21 @@ export default definePlugin((serverApi: ServerAPI) => {
     exact: true,
   });
 
+  console.log("a");
+  console.log(serverApi);
+
+  const libraryPatch = serverApi.routerHook.addPatch("/library/app/:appid", (props: { path: string; children: ReactElement }) => {
+    console.log(props);
+    return props;
+  });
+
   return {
     title: <div className={staticClasses.Title}>Example Plugin</div>,
     content: <Content serverAPI={serverApi} />,
     icon: <FaShip />,
     onDismount() {
       serverApi.routerHook.removeRoute("/decky-plugin-test");
+      serverApi.routerHook.removePatch("/library/app/:appid", libraryPatch);
     },
   };
 });

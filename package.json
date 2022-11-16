@@ -1,7 +1,7 @@
 {
-  "name": "decky-plugin-template",
+  "name": "custom-library-tabs",
   "version": "0.0.1",
-  "description": "A template to quickly create decky plugins from scratch, based on TypeScript and webpack",
+  "description": "This plugin allows you to rearrange, hide, and create new library tabs.",
   "scripts": {
     "build": "shx rm -rf dist && rollup -c",
     "watch": "rollup -c -w",
@@ -9,21 +9,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SteamDeckHomebrew/decky-plugin-template.git"
+    "url": "git+https://github.com/ardittristan/custom-library-tabs.git"
   },
   "keywords": [
     "decky",
     "plugin",
-    "plugin-template",
     "steam-deck",
     "deck"
   ],
-  "author": "Jonas Dellinger <jonas@dellinger.dev>",
-  "license": "BSD-3-Clause",
+  "author": "ardittristan",
+  "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/SteamDeckHomebrew/decky-plugin-template/issues"
+    "url": "https://github.com/ardittristan/custom-library-tabs/issues"
   },
-  "homepage": "https://github.com/SteamDeckHomebrew/decky-plugin-template#readme",
+  "homepage": "https://github.com/ardittristan/custom-library-tabs#readme",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.1.0",
     "@rollup/plugin-json": "^4.1.0",
@@ -32,6 +31,7 @@
     "@rollup/plugin-typescript": "^8.3.3",
     "@types/react": "16.14.0",
     "@types/webpack": "^5.28.0",
+    "diff": "^5.1.0",
     "rollup": "^2.77.1",
     "rollup-plugin-import-assets": "^1.1.1",
     "shx": "^0.3.4",
@@ -39,7 +39,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "decky-frontend-lib": "^3.6.1",
+    "decky-frontend-lib": "^3.8.0",
     "react-icons": "^4.4.0"
   },
   "pnpm": {

@@ -1,0 +1,22 @@
+Index: tabs.ts
+===================================================================
+--- tabs.ts
++++ tabs.ts
+@@ -1,9 +1,13 @@
+-import { SMM } from '@crankshaft/types';
+-import { DesiredTabs } from '.';
++import { patch } from "./patchservice";
+ 
+-export const patchTabs = async (smm: SMM, desiredTabs: DesiredTabs) =>
+-	smm.Patch.patchExportFromContents({
++export type DesiredTabs = {
++  id: string;
++  show: boolean;
++}[];
++
++export const patchTabs = async (desiredTabs: DesiredTabs) =>
++	patch.patchExportFromContents({
+ 		contents: [
+ 			'useState',
+ 			'useEffect',
+ 			'useCallback',

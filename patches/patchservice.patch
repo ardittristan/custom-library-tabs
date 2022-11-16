@@ -1,0 +1,37 @@
+===================================================================
+--- patch.ts
++++ patchservice.ts
+@@ -1,14 +1,23 @@
+-import { isDefined, uuidv4 } from '../util';
+-import { Service } from './service';
++// https://stackoverflow.com/a/2117523
++export const uuidv4 = (): string =>
++  // @ts-ignore
++  ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
++    (
++      c ^
++      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
++    ).toString(16)
++  );
+ 
++export const isDefined = <T>(o: T | undefined): o is T => typeof o !== "undefined";
++
+ type PatchAddress = readonly [
+   moduleId: string,
+   exportName: string,
+   index: number
+ ];
+ 
+-export class Patch extends Service {
++export class Patch {
+   private cachedExports: Record<string, string[]> = {};
+   private patches: Record<
+     string,
+     Record<
+@@ -165,4 +174,6 @@
+   removePatch(addr: PatchAddress) {
+     this.patches[addr[0]][addr[1]].callbacks[addr[2]] = undefined;
+   }
+ }
++
++export const patch = new Patch();

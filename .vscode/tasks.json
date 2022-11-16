@@ -76,7 +76,7 @@
             "detail": "chmods folders to prevent perms issues",
             "type": "shell",
             "group": "none",
-            "command": "ssh deck@${config:deckip} -p ${config:deckport} ${config:deckkey} 'echo '${config:deckpass}' | sudo -S chmod -R ug+rw ${config:deckdir}/homebrew/'",
+            "command": "ssh deck@${config:deckip} -p ${config:deckport} ${config:deckkey} 'echo ${config:deckpass} | sudo -S chmod -R ug+rw ${config:deckdir}/homebrew/'",
             "problemMatcher": []
         },
         {
@@ -100,6 +100,13 @@
                 "deployall"
             ],
             "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "workspaceFolderPosix",
+            "type": "command",
+            "command": "extension.commandvariable.workspace.folderPosix"
         }
     ]
 }
