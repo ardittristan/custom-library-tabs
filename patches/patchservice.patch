@@ -14,9 +14,10 @@
 +    ).toString(16)
 +  );
  
+-type PatchAddress = readonly [
 +export const isDefined = <T>(o: T | undefined): o is T => typeof o !== "undefined";
 +
- type PatchAddress = readonly [
++export type PatchAddress = readonly [
    moduleId: string,
    exportName: string,
    index: number

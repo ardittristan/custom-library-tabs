@@ -8,5 +8,10 @@
     "source": "./../custom-library-tabs/src/tabs.ts",
     "dest": "./tabs.ts",
     "patch": "./tabs.patch"
+  },
+  {
+    "source": "./../custom-library-tabs/src/menu/menu.tsx",
+    "dest": "./tabmenu.tsx",
+    "patch": "./tabmenu.patch"
   }
 ]

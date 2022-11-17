@@ -15,13 +15,27 @@ import { ReactElement, VFC } from "react";
 import { FaShip } from "react-icons/fa";
 
 import logo from "../assets/logo.png";
+import { Tabs } from "./interfaces";
+import { getSetting, setServer } from "./python";
+import { patchTabs } from "../patches/tabs";
+import { patch, PatchAddress } from "../patches/patchservice";
+
+// These match Steam's default library tabs
+let desiredTabs: Tabs = [
+  { id: "DeckGames", show: true },
+  { id: "AllGames", show: true },
+  { id: "Installed", show: true },
+  { id: "Favorites", show: true },
+  { id: "Collections", show: true },
+  { id: "DesktopApps", show: true },
+];
 
 // interface AddMethodArgs {
 //   left: number;
 //   right: number;
 // }
 
-const Content: VFC<{ serverAPI: ServerAPI }> = ({}) => {
+const Content: VFC<{ serverAPI: ServerAPI; tabs: Tabs }> = ({ serverAPI: _serverAPI, tabs: _tabs }) => {
   // const [result, setResult] = useState<number | undefined>();
 
   // const onClick = async () => {
@@ -87,13 +101,25 @@ const DeckyPluginRouterTest: VFC = () => {
   );
 };
 
+let patchAddr: PatchAddress | undefined;
+
 export default definePlugin((serverApi: ServerAPI) => {
+  setServer(serverApi);
+
   serverApi.routerHook.addRoute("/decky-plugin-test", DeckyPluginRouterTest, {
     exact: true,
   });
 
   console.log("a");
   console.log(serverApi);
+
+  getSetting("savedTabs", desiredTabs).then(async (savedTabs) => {
+    if (savedTabs) {
+      desiredTabs = savedTabs;
+    }
+
+    patchAddr = await patchTabs(desiredTabs);
+  });
 
   const libraryPatch = serverApi.routerHook.addPatch("/library/app/:appid", (props: { path: string; children: ReactElement }) => {
     console.log(props);
@@ -102,11 +128,13 @@ export default definePlugin((serverApi: ServerAPI) => {
 
   return {
     title: <div className={staticClasses.Title}>Example Plugin</div>,
-    content: <Content serverAPI={serverApi} />,
+    content: <Content serverAPI={serverApi} tabs={desiredTabs} />,
     icon: <FaShip />,
     onDismount() {
       serverApi.routerHook.removeRoute("/decky-plugin-test");
       serverApi.routerHook.removePatch("/library/app/:appid", libraryPatch);
+      document.querySelectorAll("[data-custom-library-tabs]").forEach((node) => node.remove());
+      if (patchAddr) patch.removePatch(patchAddr);
     },
   };
 });

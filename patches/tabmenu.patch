@@ -1,0 +1,40 @@
+===================================================================
+--- menu.tsx
++++ tabmenu.tsx
+@@ -1,9 +1,6 @@
+-import { SMM } from '@crankshaft/types';
+-import { FunctionComponent, render } from 'preact';
+-import { useCallback, useMemo, useState } from 'preact/hooks';
+-import { DesiredTabs, PLUGIN_ID } from '../';
+-import { AddCollection } from './add-collection';
++import { VFC, useMemo } from 'react';
++import { Tabs } from '../src/interfaces';
+ 
+ const defaultTabNames: Record<string, string> = {
+ 	DeckGames: 'Great on Deck',
+ 	Installed: 'Installed',
+@@ -12,8 +9,9 @@
+ 	Collections: 'Collections',
+ 	DesktopApps: 'Non-Steam',
+ };
+ 
++/*
+ export const renderMenu =
+ 	(tabs: DesiredTabs) => (smm: SMM, root: HTMLElement) => {
+ 		render(<App smm={smm} tabs={tabs} />, root);
+ 
+@@ -137,11 +135,12 @@
+ 			) : null}
+ 		</>
+ 	);
+ };
++*/
+ 
+-const Tab: FunctionComponent<
+-	DesiredTabs[number] & {
++export const Tab: VFC<
++	Tabs[number] & {
+ 		index: number;
+ 		first: boolean;
+ 		last: boolean;
+ 		toggleShowOrRemove: () => void;

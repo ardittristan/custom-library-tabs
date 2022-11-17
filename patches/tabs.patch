@@ -2,21 +2,27 @@ Index: tabs.ts
 ===================================================================
 --- tabs.ts
 +++ tabs.ts
-@@ -1,9 +1,13 @@
+@@ -1,9 +1,9 @@
 -import { SMM } from '@crankshaft/types';
 -import { DesiredTabs } from '.';
++import { Tabs } from "../src/interfaces";
 +import { patch } from "./patchservice";
  
 -export const patchTabs = async (smm: SMM, desiredTabs: DesiredTabs) =>
 -	smm.Patch.patchExportFromContents({
-+export type DesiredTabs = {
-+  id: string;
-+  show: boolean;
-+}[];
-+
-+export const patchTabs = async (desiredTabs: DesiredTabs) =>
++export const patchTabs = async (desiredTabs: Tabs) =>
 +	patch.patchExportFromContents({
  		contents: [
  			'useState',
  			'useEffect',
  			'useCallback',
+@@ -12,8 +12,9 @@
+ 			'createElement',
+ 			'cloneElement',
+ 		],
+ 		export: 'useMemo',
++		// @ts-ignore
+ 		callback: (origFunc, react, ...args) => {
+ 			if (
+ 				args[1].length === 10 &&
+ 				args[1].find((o: any) => o && o.id && o.id === 'deck-desktop-apps')

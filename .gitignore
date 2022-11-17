@@ -45,5 +45,4 @@ yalc.lock
 
 backend/out
 
-patches/*.ts
-patches/*.js
+patches/*.[tj]s*
