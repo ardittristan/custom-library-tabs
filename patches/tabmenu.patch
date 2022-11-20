@@ -1,19 +1,24 @@
 ===================================================================
 --- menu.tsx
 +++ tabmenu.tsx
-@@ -1,9 +1,6 @@
+@@ -1,19 +1,20 @@
 -import { SMM } from '@crankshaft/types';
 -import { FunctionComponent, render } from 'preact';
 -import { useCallback, useMemo, useState } from 'preact/hooks';
 -import { DesiredTabs, PLUGIN_ID } from '../';
 -import { AddCollection } from './add-collection';
-+import { VFC, useMemo } from 'react';
++import { ButtonItem, showContextMenu } from 'decky-frontend-lib';
++import { VFC, useMemo, useState, useCallback } from 'react';
++import { AddCollection } from '../src/add-collection';
 +import { Tabs } from '../src/interfaces';
++import { setSetting } from '../src/python';
  
- const defaultTabNames: Record<string, string> = {
+-const defaultTabNames: Record<string, string> = {
++export const defaultTabNames: Record<string, string> = {
  	DeckGames: 'Great on Deck',
  	Installed: 'Installed',
-@@ -12,8 +9,9 @@
+ 	AllGames: 'All Games',
+ 	Favorites: 'Favorites',
  	Collections: 'Collections',
  	DesktopApps: 'Non-Steam',
  };
@@ -23,16 +28,88 @@
  	(tabs: DesiredTabs) => (smm: SMM, root: HTMLElement) => {
  		render(<App smm={smm} tabs={tabs} />, root);
  
-@@ -137,11 +135,12 @@
- 			) : null}
+@@ -35,11 +36,11 @@
+ 		`;
+ 		style.dataset.customLibraryTabs = 'styles';
+ 		document.head.appendChild(style);
+ 	};
++*/
+ 
+-const App: FunctionComponent<{ smm: SMM; tabs: DesiredTabs }> = ({
+-	smm,
++export const App: VFC<{ tabs: Tabs }> = ({
+ 	tabs,
+ }) => {
+ 	const [showAddCollection, setShowAddCollection] = useState(false);
+ 	const toggleShowAddCollection = useCallback(() => {
+@@ -47,13 +48,13 @@
+ 	}, [showAddCollection, setShowAddCollection]);
+ 
+ 	const [, forceUpdate] = useState<any>();
+ 	const saveAndUpdate = useCallback(
+-		(newTabs: DesiredTabs) => {
+-			smm.Store.set(PLUGIN_ID, 'savedTabs', JSON.stringify(newTabs));
++		async (newTabs: Tabs) => {
++			await setSetting('savedTabs', newTabs);
+ 			forceUpdate({});
+ 		},
+-		[forceUpdate, smm]
++		[forceUpdate]
+ 	);
+ 
+ 	return (
+ 		<>
+@@ -66,17 +67,23 @@
+ 				}}
+ 			>
+ 				<h1 style={{ margin: 0 }}>Custom Library Tabs</h1>
+ 				<p>Use the list below to show/hide, rearrange, or add custom tabs.</p>
+-				<button
+-					className="cs-button"
+-					onClick={toggleShowAddCollection}
+-					data-cs-gp-in-group="root"
+-					data-cs-gp-item="add-collection"
+-					data-cs-gp-init-focus
++				<ButtonItem
++					layout='below'
++					onClick={(e) =>
++						showContextMenu(
++							<AddCollection
++								onClose={toggleShowAddCollection}
++								saveAndUpdate={saveAndUpdate}
++								tabs={tabs}
++							/>,
++							e.currentTarget ?? window
++						)
++					}
+ 				>
+ 					Add Collection
+-				</button>
++				</ButtonItem>
+ 				<ul
+ 					style={{
+ 						width: 'min-content',
+ 
+@@ -127,21 +134,15 @@
+ 						/>
+ 					))}
+ 				</ul>
+ 			</div>
+-			{showAddCollection ? (
+-				<AddCollection
+-					onClose={toggleShowAddCollection}
+-					saveAndUpdate={saveAndUpdate}
+-					tabs={tabs}
+-				/>
+-			) : null}
  		</>
  	);
  };
-+*/
  
 -const Tab: FunctionComponent<
 -	DesiredTabs[number] & {
-+export const Tab: VFC<
++
++const Tab: VFC<
 +	Tabs[number] & {
  		index: number;
  		first: boolean;

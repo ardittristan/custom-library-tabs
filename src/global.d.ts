@@ -3,7 +3,7 @@ declare global {
     collectionStore: {
       GetCollection: (id: string) => { displayName: string; allApps: any[] } | undefined;
       m_mapCollectionStorage: {
-        mapinternal: Map<string, string>;
+        mapInternal: Map<string, string>;
       };
     };
     webpackChunksteamui: (number[] | ((r: any) => void) | {})[][];

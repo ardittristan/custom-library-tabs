@@ -19,6 +19,7 @@ import { Tabs } from "./interfaces";
 import { getSetting, setServer } from "./python";
 import { patchTabs } from "../patches/tabs";
 import { patch, PatchAddress } from "../patches/patchservice";
+import { App } from "../patches/tabmenu";
 
 // These match Steam's default library tabs
 let desiredTabs: Tabs = [
@@ -35,7 +36,7 @@ let desiredTabs: Tabs = [
 //   right: number;
 // }
 
-const Content: VFC<{ serverAPI: ServerAPI; tabs: Tabs }> = ({ serverAPI: _serverAPI, tabs: _tabs }) => {
+const Content: VFC<{ serverAPI: ServerAPI; tabs: Tabs }> = ({ serverAPI: _serverAPI, tabs: tabs }) => {
   // const [result, setResult] = useState<number | undefined>();
 
   // const onClick = async () => {
@@ -52,43 +53,51 @@ const Content: VFC<{ serverAPI: ServerAPI; tabs: Tabs }> = ({ serverAPI: _server
   // };
 
   return (
-    <PanelSection title="Panel Section">
-      <PanelSectionRow>
-        <ButtonItem
-          layout="below"
-          onClick={(e) =>
-            showContextMenu(
-              <Menu label="Menu" cancelText="CAAAANCEL" onCancel={() => {}}>
-                <MenuItem onSelected={() => {}}>Item #1</MenuItem>
-                <MenuItem onSelected={() => {}}>Item #2</MenuItem>
-                <MenuItem onSelected={() => {}}>Item #3</MenuItem>
-              </Menu>,
-              e.currentTarget ?? window
-            )
-          }
-        >
-          Server says yolo
-        </ButtonItem>
-      </PanelSectionRow>
+    <div>
+      <PanelSection title="Settings">
+        <PanelSectionRow>
+          <App tabs={tabs} />
+        </PanelSectionRow>
+      </PanelSection>
 
-      <PanelSectionRow>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <img src={logo} />
-        </div>
-      </PanelSectionRow>
+      <PanelSection title="Tabs">
+        <PanelSectionRow>
+          <ButtonItem
+            layout="below"
+            onClick={(e) =>
+              showContextMenu(
+                <Menu label="Menu" cancelText="CAAAANCEL" onCancel={() => {}}>
+                  <MenuItem onSelected={() => {}}>Item #1</MenuItem>
+                  <MenuItem onSelected={() => {}}>Item #2</MenuItem>
+                  <MenuItem onSelected={() => {}}>Item #3</MenuItem>
+                </Menu>,
+                e.currentTarget ?? window
+              )
+            }
+          >
+            Server says yolo
+          </ButtonItem>
+        </PanelSectionRow>
 
-      <PanelSectionRow>
-        <ButtonItem
-          layout="below"
-          onClick={() => {
-            Router.CloseSideMenus();
-            Router.Navigate("/decky-plugin-test");
-          }}
-        >
-          Router
-        </ButtonItem>
-      </PanelSectionRow>
-    </PanelSection>
+        <PanelSectionRow>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <img src={logo} />
+          </div>
+        </PanelSectionRow>
+
+        <PanelSectionRow>
+          <ButtonItem
+            layout="below"
+            onClick={() => {
+              Router.CloseSideMenus();
+              Router.Navigate("/decky-plugin-test");
+            }}
+          >
+            Router
+          </ButtonItem>
+        </PanelSectionRow>
+      </PanelSection>
+    </div>
   );
 };
 
