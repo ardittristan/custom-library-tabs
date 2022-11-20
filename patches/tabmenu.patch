@@ -7,7 +7,7 @@
 -import { useCallback, useMemo, useState } from 'preact/hooks';
 -import { DesiredTabs, PLUGIN_ID } from '../';
 -import { AddCollection } from './add-collection';
-+import { ButtonItem, showContextMenu } from 'decky-frontend-lib';
++import { Button, ButtonItem, showContextMenu } from 'decky-frontend-lib';
 +import { VFC, useMemo, useState, useCallback } from 'react';
 +import { AddCollection } from '../src/add-collection';
 +import { Tabs } from '../src/interfaces';
@@ -90,7 +90,17 @@
  					style={{
  						width: 'min-content',
  
-@@ -127,21 +134,15 @@
+@@ -88,9 +95,8 @@
+ 						alignItems: 'center',
+ 						overflow: 'scroll',
+ 
+ 						listStyle: 'none',
+-						padding: 16,
+ 						backgroundColor: 'rgba(0, 0, 0, 20%)',
+ 						borderRadius: 8,
+ 					}}
+ 					data-cs-gp-in-group="root"
+@@ -127,21 +133,15 @@
  						/>
  					))}
  				</ul>
@@ -115,3 +125,98 @@
  		first: boolean;
  		last: boolean;
  		toggleShowOrRemove: () => void;
+@@ -167,51 +167,48 @@
+ 
+ 	const gridRow = index + 1;
+ 
+ 	return (
+-		<li
+-			style={{ display: 'contents', color: show ? 'white' : undefined }}
+-			className="custom-library-tabs__tab-container"
+-			data-cs-gp-in-group="tabs-list"
+-			data-cs-gp-group={`tab-${id}`}
+-		>
+-			<span style={{ gridRow, gridColumn: 1 }}>{name}</span>
+-			<span style={{ gridRow, gridColumn: 2 }}>{show ? '' : 'Hidden'}</span>
+-			<button
+-				className="cs-button"
+-				style={{ width: '100%', gridRow, gridColumn: 3 }}
+-				onClick={toggleShowOrRemove}
+-				data-cs-gp-in-group={`tab-${id}`}
+-				data-cs-gp-item={`tab-${id}-toggle`}
+-			>
+-				{btnText}
+-			</button>
+-			<button
+-				className="cs-button"
+-				style={{ gridRow, gridColumn: 4 }}
+-				disabled={first}
+-				onClick={() => move('up')}
+-				data-cs-gp-in-group={`tab-${id}`}
+-				data-cs-gp-item={`tab-${id}-up`}
+-			>
+-				🡑
+-			</button>
+-			<button
+-				className="cs-button"
+-				style={{ gridRow, gridColumn: 5 }}
+-				disabled={last}
+-				onClick={() => move('down')}
+-				data-cs-gp-in-group={`tab-${id}`}
+-				data-cs-gp-item={`tab-${id}-down`}
+-			>
+-				🡓
+-			</button>
+-			<div
+-				className="tab-border"
+-				style={{
+-					gridRow,
+-					gridColumn: '1 / 6',
+-				}}
+-			/>
+-		</li>
+-	);
++    <li
++      style={{ display: "contents", color: show ? "white" : undefined }}
++      className="custom-library-tabs__tab-container"
++      data-cs-gp-in-group="tabs-list"
++      data-cs-gp-group={`tab-${id}`}
++    >
++      <span style={{ gridRow, gridColumn: 1 }}>{name}</span>
++      <span style={{ gridRow, gridColumn: 2 }}>{show ? "" : "Hidden"}</span>
++      <Button
++        style={{ width: "100%", gridRow, gridColumn: 3 }}
++        onClick={toggleShowOrRemove}
++        data-cs-gp-in-group={`tab-${id}`}
++        data-cs-gp-item={`tab-${id}-toggle`}
++      >
++        {btnText}
++      </Button>
++      <Button
++        style={{ gridRow, gridColumn: 4 }}
++        disabled={first}
++        onClick={() => move("up")}
++        data-cs-gp-in-group={`tab-${id}`}
++        data-cs-gp-item={`tab-${id}-up`}
++      >
++        🡑
++      </Button>
++      <Button
++        style={{ gridRow, gridColumn: 5 }}
++        disabled={last}
++        onClick={() => move("down")}
++        data-cs-gp-in-group={`tab-${id}`}
++        data-cs-gp-item={`tab-${id}-down`}
++      >
++        🡓
++      </Button>
++      <div
++        className="tab-border"
++        style={{
++          gridRow,
++          gridColumn: "1 / 6",
++        }}
++      />
++    </li>
++  );
+ };
